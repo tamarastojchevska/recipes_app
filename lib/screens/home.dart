@@ -75,17 +75,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         borderSide: BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      suffixIcon: _searchController.text.isEmpty
-                          ? null
-                          : IconButton(
-                              icon: Icon(Icons.clear, color: Colors.black),
-                              onPressed: () {
-                                setState(() {
-                                  _searchController.clear();
-                                  _filteredCategories = _categories;
-                                });
-                              },
-                            ),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear, color: Colors.black),
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _filteredCategories = _categories;
+                          });
+                        },
+                      ),
                     ),
                     onChanged: (value) {
                       _searchCategoryByName(value);

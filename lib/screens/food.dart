@@ -76,17 +76,15 @@ class _FoodPageState extends State<FoodPage> {
                         borderSide: BorderSide(color: Colors.black),
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      suffixIcon: _searchController.text.isEmpty
-                          ? null
-                          : IconButton(
-                              icon: Icon(Icons.clear, color: Colors.black),
-                              onPressed: () {
-                                setState(() {
-                                  _searchController.clear();
-                                  _filteredFood = _food;
-                                });
-                              },
-                            ),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear, color: Colors.black),
+                        onPressed: () {
+                          setState(() {
+                            _searchController.clear();
+                            _filteredFood = _food;
+                          });
+                        },
+                      ),
                     ),
                     onChanged: (value) {
                       _searchFood(value);

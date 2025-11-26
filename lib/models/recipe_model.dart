@@ -31,10 +31,12 @@ class Recipe {
     'youtube': youtube,
   };
 
-  static String _getIngredients(Map<String, dynamic> data){
+  static String _getIngredients(Map<String, dynamic> data) {
     String temp = "";
     for (var i = 1; i < 21; i++) {
-      temp += data['strIngredient$i'] + ',';
+      if (data['ingredient$i'] != null || data['strMeasure$i'] != null) {
+        temp += '${data['strIngredient$i']} ${data['strMeasure$i']},';
+      }
     }
     return temp;
   }

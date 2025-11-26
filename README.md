@@ -1,4 +1,5 @@
 # Recipes - Mobile App
+This is the 2nd laboratory exercise for the subject Mobile Information Systems at FCSE.
 
 ## Screenshots
 ### Home (Category) Screen

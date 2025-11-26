@@ -70,26 +70,8 @@ class ApiService {
     }
   }
 
-  Future<List<Recipe>> getRecipeById(String id) async {
-    List<Recipe> recipe = [];
-    final response = await http.get(
-      Uri.parse('https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id'),
-    );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body)['meals'][0];
-      recipe.add(Recipe.fromJson(data));
-      List<String> temp = [];
-      for (var i = 1; i < 21; i++) {
-        temp.add(data['strIngredient$i']);
-      }
-      recipe[0].instructions = temp.toString();
-    }
-    return recipe;
-  }
-
-  Future<Recipe?> getRecipeById2(String id) async {
-    try{
+  Future<Recipe?> getRecipeById(String id) async {
+    try {
       final response = await http.get(
         Uri.parse('https://www.themealdb.com/api/json/v1/1/lookup.php?i=$id'),
       );
@@ -99,14 +81,13 @@ class ApiService {
         return Recipe.fromJson(data);
       }
       return null;
-    }
-    catch (e){
+    } catch (e) {
       return null;
     }
   }
 
   Future<Recipe?> getRandomRecipe() async {
-    try{
+    try {
       final response = await http.get(
         Uri.parse('https://www.themealdb.com/api/json/v1/1/random.php'),
       );
@@ -116,10 +97,8 @@ class ApiService {
         return Recipe.fromJson(data);
       }
       return null;
-    }
-    catch (e){
+    } catch (e) {
       return null;
     }
   }
-
 }

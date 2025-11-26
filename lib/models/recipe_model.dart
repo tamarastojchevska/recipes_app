@@ -35,7 +35,7 @@ class Recipe {
     String temp = "";
     for (var i = 1; i < 21; i++) {
       if (data['ingredient$i'] != null || data['strMeasure$i'] != null) {
-        temp += '${data['strIngredient$i']} ${data['strMeasure$i']},';
+        temp += '${data['strIngredient$i']} ${data['strMeasure$i'].toString().toLowerCase()},';
       }
     }
     return temp;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:recipes_app/screens/recipe.dart';
 import 'package:recipes_app/services/api_service.dart';
 import 'package:recipes_app/widgets/food_grid_view.dart';
 import '../models/food_model.dart';
@@ -31,40 +32,63 @@ class _FoodPageState extends State<FoodPage> {
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         backgroundColor: Colors.black45,
+        foregroundColor: Colors.white,
         title: Text(
           widget.category,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.fastfood_outlined, color: Colors.white),
+            tooltip: 'Random Recipe!',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RecipePage("")),
+              );
+            },
+          ),
+        ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            )
           : //FoodGridView(food: _filteredFood),
             Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextField(
+                    cursorColor: Colors.black,
                     controller: _searchController,
                     decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       hintText: 'Search Food...',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                      hintStyle: TextStyle(color: Colors.black),
+                      prefixIcon: const Icon(Icons.search, color: Colors.black),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       suffixIcon: _searchController.text.isEmpty
                           ? null
                           : IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () {
-                          setState(() {
-                            _searchController.clear();
-                            _filteredFood = _food;
-                          });
-                        },
-                      ),
+                              icon: Icon(Icons.clear, color: Colors.black),
+                              onPressed: () {
+                                setState(() {
+                                  _searchController.clear();
+                                  _filteredFood = _food;
+                                });
+                              },
+                            ),
                     ),
-                    onSubmitted: (value) {
-                      _isLoading = true;
+                    onChanged: (value) {
                       _searchFood(value);
                     },
                   ),

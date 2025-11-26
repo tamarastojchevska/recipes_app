@@ -33,10 +33,15 @@ class _RecipePageState extends State<RecipePage> {
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         backgroundColor: Colors.black45,
+        foregroundColor: Colors.white,
       ),
       backgroundColor: Colors.grey,
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            )
           : SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.all(30),
@@ -46,56 +51,78 @@ class _RecipePageState extends State<RecipePage> {
                     child: Column(
                       children: [
                         Image.network(_recipe.image, fit: BoxFit.contain),
-                        SizedBox(height: 20),
+                        SizedBox(height: 16),
                         Text(
                           _recipe.name,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 20),
-                        RichText(
-                          text: TextSpan(
-                            text: 'Watch the recipe on Youtube!',
-                            style: TextStyle(color: Colors.blue),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                launchUrl(Uri.parse(_recipe.youtube));
-                              },
-                          ),
+                        SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: 'Watch the recipe on YouTube ',
+                                style: TextStyle(color: Colors.blue),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    launchUrl(Uri.parse(_recipe.youtube));
+                                  },
+                              ),
+                            ),
+                            Icon(
+                              Icons.open_in_new,
+                              color: Colors.blue,
+                              size: 14,
+                            ),
+                          ],
                         ),
-                        Divider(height: 20),
+                        Divider(height: 30),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "Ingredients:",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 18,
                             ),
                           ),
                         ),
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: _ingredients.length,
-                          itemBuilder: (context, index) {
-                            return Text(_ingredients[index]);
-                          },
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 10,
+                          ),
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _ingredients.length,
+                            itemBuilder: (context, index) {
+                              return Expanded(
+                                child: Text('\u2022 ${_ingredients[index]}'),
+                              );
+                            },
+                          ),
                         ),
-                        Divider(height: 20),
+                        Divider(height: 30),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             "Instructions:",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              fontSize: 18,
                             ),
                           ),
                         ),
-                        Text(_recipe.instructions),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(_recipe.instructions),
+                        ),
                       ],
                     ),
                   ),
@@ -110,13 +137,13 @@ class _RecipePageState extends State<RecipePage> {
     if (widget.recipeId.isEmpty) {
       recipe = await _apiService.getRandomRecipe();
     } else {
-      recipe = await _apiService.getRecipeById2(widget.recipeId);
+      recipe = await _apiService.getRecipeById(widget.recipeId);
     }
     List<String> ingredients = [];
     if (recipe != null) {
       ingredients = recipe.ingredients
           .split(',')
-          .where((item) => item.isNotEmpty)
+          .where((item) => item.trim().isNotEmpty)
           .toList();
     }
 

@@ -32,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         scrolledUnderElevation: 0.0,
         backgroundColor: Colors.black45,
+        foregroundColor: Colors.white,
         title: Text(
           widget.title,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -50,23 +51,34 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            )
           : Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: TextField(
+                    cursorColor: Colors.black,
                     controller: _searchController,
                     decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       hintText: 'Search Category...',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                      hintStyle: TextStyle(color: Colors.black),
+                      prefixIcon: const Icon(Icons.search, color: Colors.black),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(30),
                       ),
                       suffixIcon: _searchController.text.isEmpty
                           ? null
                           : IconButton(
-                              icon: Icon(Icons.clear),
+                              icon: Icon(Icons.clear, color: Colors.black),
                               onPressed: () {
                                 setState(() {
                                   _searchController.clear();

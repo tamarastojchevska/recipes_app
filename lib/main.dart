@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:recipes_app/screens/home.dart';
 import 'firebase_options.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:recipes_app/services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,6 +11,11 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  final notificationService = NotificationService();
+  await notificationService.initFCM();
+
+  FirebaseMessaging.onBackgroundMessage(handeBackgroundMessage);
 
   runApp(const MyApp());
 }
@@ -27,4 +34,8 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
     );
   }
+}
+
+Future<void> handeBackgroundMessage(RemoteMessage message) async {
+  print('Message: ${message.notification?.title}');
 }

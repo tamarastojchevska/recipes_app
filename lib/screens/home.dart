@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:recipes_app/screens/favorites.dart';
+import 'package:recipes_app/screens/food.dart';
 import 'package:recipes_app/screens/recipe.dart';
 import 'package:recipes_app/services/api_service.dart';
+import 'package:recipes_app/services/auth_service.dart';
 import 'package:recipes_app/widgets/category_list_view.dart';
 import '../models/category_model.dart';
 
@@ -38,14 +41,38 @@ class _MyHomePageState extends State<MyHomePage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.fastfood_outlined, color: Colors.white),
-            tooltip: 'Random Recipe!',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RecipePage("")),
-              );
+          PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: "favorites",
+                child: Text('Favorites'),
+              ),
+              PopupMenuItem(
+                value: "random",
+                child: Text('Random recipe'),
+              ),
+              // PopupMenuItem(
+              //   value: "logout",
+              //   child: Text('Log out'),
+              // ),
+            ],
+            onSelected: (value) async {
+              if (value == "favorites"){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FavoritePage(),
+                  ),
+                );
+              } else if (value == "random"){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecipePage("")),
+                );
+              }
+              // else if (value == "logout"){
+              //   await AuthService().logout(context);
+              // }
             },
           ),
         ],

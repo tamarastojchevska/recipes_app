@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:recipes_app/screens/recipe.dart';
 import 'package:recipes_app/services/api_service.dart';
 import 'package:recipes_app/widgets/food_grid_view.dart';
 import '../models/food_model.dart';
+import '../services/favorites_service.dart';
 
 class FoodPage extends StatefulWidget {
   final String category;
@@ -18,6 +18,7 @@ class _FoodPageState extends State<FoodPage> {
   List<Food> _filteredFood = [];
   bool _isLoading = true;
   final ApiService _apiService = ApiService();
+  final FavoritesService _favoritesService = FavoritesService();
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -37,18 +38,6 @@ class _FoodPageState extends State<FoodPage> {
           widget.category,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.fastfood_outlined, color: Colors.white),
-            tooltip: 'Random Recipe!',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RecipePage("")),
-              );
-            },
-          ),
-        ],
       ),
       body: _isLoading
           ? const Center(
@@ -100,6 +89,15 @@ class _FoodPageState extends State<FoodPage> {
 
   void _loadFoodList() async {
     List<Food> foodList = await _apiService.loadFoodList(widget.category);
+
+    for (final food in foodList){
+      for (final fave in _favoritesService.getFavoritesList()){
+        if (food.id == fave.id){
+          food.favorite = true;
+          break;
+        }
+      }
+    }
 
     setState(() {
       _food = foodList;

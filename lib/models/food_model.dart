@@ -2,6 +2,7 @@ class Food {
   String id;
   String name;
   String image;
+  bool favorite = false;
 
   Food({required this.id, required this.name, required this.image});
 
